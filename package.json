@@ -1,0 +1,25 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "liri.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aarontjackson/liri-node-app.git"
+  },
+  "author": "Aaron Jackson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aarontjackson/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/aarontjackson/liri-node-app#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "dotenv": "^8.1.0",
+    "moment": "^2.24.0",
+    "node-spotify-api": "^1.1.1"
+  }
+}
