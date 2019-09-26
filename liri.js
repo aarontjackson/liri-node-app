@@ -9,13 +9,13 @@ var fs = require("fs");
 var whatToDo = process.argv[2];
 var userInput = process.argv[3];
 
-const queryURL = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
+// const queryURL = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
 
 function spotifyThis(input) {
     spotify
         .search({ type: 'track', query: input, limit: 5 })
         .then(function (response) {
-            console.log(JSON.stringify(response, null, 2)); //response.tracks.items[0].artist.name
+            console.log(JSON.stringify(response.tracks.items[0].artist, null, 2)); //response.tracks.items[0].artist.name
         })
         .catch(function (err) {
             console.log(err);
@@ -27,13 +27,13 @@ function concertThis() {
 }
 
 async function movieThis() {
-    try {
-        const response = await axios.get(queryURL)
-            console.log(response.data);
-    }
-    catch (error){
-        console.log(error)
-    }
+    // try {
+    //     const response = await axios.get(queryURL)
+    //         console.log(response.data);
+    // }
+    // catch (error){
+    //     console.log(error)
+    // }
 }
 
 movieThis();
