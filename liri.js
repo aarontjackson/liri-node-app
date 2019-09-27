@@ -9,7 +9,8 @@ var fs = require("fs");
 var whatToDo = process.argv[2];
 var userInput = process.argv[3];
 
-// const queryURL = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
+
+const queryURL = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
 
 function spotifyThis(input) {
     spotify
@@ -22,21 +23,36 @@ function spotifyThis(input) {
         });
 }
 
-function concertThis() {
-
+async function concertThis(userInput) {
+    try {
+        const response = await axios.get( "https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp")
+            console.log(response);
+    }
+    catch(error){
+        console.log(error);
+    }
 }
 
-async function movieThis() {
-    // try {
-    //     const response = await axios.get(queryURL)
-    //         console.log(response.data);
-    // }
-    // catch (error){
-    //     console.log(error)
-    // }
+concertThis(userInput);
+
+async function movieThis(userInput) {
+    try {
+        const response = await axios.get("http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy")
+            console.log(`Title: ${response.data.Title}`);
+            console.log(`Year: ${response.data.Year}`);
+            console.log(`IMBD Rating: ${response.data.Ratings[0].Value}`);
+            console.log(`Rotten Tomatoes Rating: ${response.data.Ratings[1].Value}`);
+            console.log(`Country: ${response.data.Country}`);
+            console.log(`Language: ${response.data.Language}`);
+            console.log(`Plot: ${response.data.Plot}`);
+            console.log(`Actors: ${response.data.Actors}`);
+    }
+    catch (error){
+        console.log(error)
+    }
 }
 
-movieThis();
+movieThis(userInput);
 
 function doWhatItSays() {
 
@@ -50,7 +66,7 @@ switch (whatToDo) {
         movieThis(userInput);
         break;
     case "concert-this":
-        concertThis();
+        concertThis(userInput);
         break;
     case "do-what-it-says":
         doWhatItSays();
