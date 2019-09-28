@@ -18,7 +18,12 @@ function spotifyThis(input) {
     spotify
         .search({ type: 'track', query: input, limit: 5 })
         .then(function (response) {
-            console.log(JSON.stringify(response.tracks.items[0].artist, null, 2)); //response.tracks.items[0].artist.name
+            console.log("\n============================================================\n");
+            console.log(chalk.yellow("Artist: " + JSON.stringify(response.tracks.items[0].artists[0].name, null, 2)));
+            console.log(chalk.yellow("Song: " + JSON.stringify(response.tracks.items[0].name, null, 2)));
+            console.log(chalk.yellow("URL: " + JSON.stringify(response.tracks.items[0].external_urls.spotify, null, 2)));
+            console.log(chalk.yellow("Album: " + JSON.stringify(response.tracks.items[0].album.name, null, 2)));
+            console.log("\n============================================================\n");
         })
         .catch(function (err) {
             console.log(err);
@@ -37,13 +42,14 @@ async function concertThis(userInput) {
             console.log("no results found for artist");
             return;
         }
-        for (let i = 0; i < jsondata.length; i++) {
+        for (let i = 2; i < jsondata.length; i++) {
             let show = jsondata[i];
-            console.log(
+            console.log("\n=======================================================================\n");
+            console.log(chalk.blue(
                 
                 show.venue.city +
                 "," + 
-                (show.venue.region || show.venue.country) + " at " + show.venue.name + " " + moment(show.datetime).format("MM/DD/YYYY"))
+                (show.venue.region || show.venue.country) + " at " + show.venue.name + " " + moment(show.datetime).format("MM/DD/YYYY")))
                 
          
             };
@@ -54,29 +60,29 @@ async function concertThis(userInput) {
 
 }
 
-concertThis(userInput);
 
 async function movieThis(userInput) {
     try {
         const response = await axios.get("http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy")
-        console.log(`Title: ${response.data.Title}`);
-        console.log(`Year: ${response.data.Year}`);
-        console.log(`IMBD Rating: ${response.data.Ratings[0].Value}`);
-        console.log(`Rotten Tomatoes Rating: ${response.data.Ratings[1].Value}`);
-        console.log(`Country: ${response.data.Country}`);
-        console.log(`Language: ${response.data.Language}`);
-        console.log(`Plot: ${response.data.Plot}`);
-        console.log(`Actors: ${response.data.Actors}`);
+        console.log("\n=========================================\n");
+        console.log(chalk.green(`Title: ${response.data.Title}`));
+        console.log(chalk.green(`Year: ${response.data.Year}`));
+        console.log(chalk.green(`IMBD Rating: ${response.data.Ratings[0].Value}`));
+        console.log(chalk.green(`Rotten Tomatoes Rating: ${response.data.Ratings[1].Value}`));
+        console.log(chalk.green(`Country: ${response.data.Country}`));
+        console.log(chalk.green(`Language: ${response.data.Language}`));
+        console.log(chalk.green(`Plot: ${response.data.Plot}`));
+        console.log(chalk.green(`Actors: ${response.data.Actors}`));
+        console.log("\n=========================================\n");
     }
     catch (error) {
         console.log(error)
     }
 }
 
-// movieThis(userInput);
 
 function doWhatItSays() {
-
+    
 }
 
 switch (whatToDo) {
@@ -86,6 +92,11 @@ switch (whatToDo) {
 
     case "concert-this":
         concertThis(userInput);
+        if(userInput === undefined){
+
+            console.log();
+            
+        }
         break;
     case "movie-this":
         movieThis(userInput);
