@@ -10,13 +10,14 @@ const chalk = require('chalk');
 
 var whatToDo = process.argv[2];
 var userInput = process.argv[3];
+var liriChoice = process.argv.slice(3).join(" ");
 
 
 
 
 function spotifyThis(input) {
     spotify
-        .search({ type: 'track', query: input, limit: 5 })
+        .search({ type: 'track', query: input, limit: 1 })
         .then(function (response) {
             console.log("\n============================================================\n");
             console.log(chalk.yellow("Artist: " + JSON.stringify(response.tracks.items[0].artists[0].name, null, 2)));
@@ -24,11 +25,16 @@ function spotifyThis(input) {
             console.log(chalk.yellow("URL: " + JSON.stringify(response.tracks.items[0].external_urls.spotify, null, 2)));
             console.log(chalk.yellow("Album: " + JSON.stringify(response.tracks.items[0].album.name, null, 2)));
             console.log("\n============================================================\n");
+
+            if (userInput === undefined) {
+                userInput = "The Sign";
+
+            }
         })
         .catch(function (err) {
             console.log(err);
         });
-}
+};
 
 async function concertThis(userInput) {
     try {
@@ -36,7 +42,7 @@ async function concertThis(userInput) {
         // console.log(response);
         var jsondata = response.data;
         console.log(jsondata);
-        
+
 
         if (!jsondata.length) {
             console.log("no results found for artist");
@@ -46,19 +52,19 @@ async function concertThis(userInput) {
             let show = jsondata[i];
             console.log("\n=======================================================================\n");
             console.log(chalk.blue(
-                
+
                 show.venue.city +
-                "," + 
+                "," +
                 (show.venue.region || show.venue.country) + " at " + show.venue.name + " " + moment(show.datetime).format("MM/DD/YYYY")))
-                
-         
-            };
+
+
+        };
     }
     catch (error) {
         console.log(error);
     }
 
-}
+};
 
 
 async function movieThis(userInput) {
@@ -74,16 +80,34 @@ async function movieThis(userInput) {
         console.log(chalk.green(`Plot: ${response.data.Plot}`));
         console.log(chalk.green(`Actors: ${response.data.Actors}`));
         console.log("\n=========================================\n");
+
+        if (userInput === undefined) {
+            userInput = "Mr. Nobody";
+
+        }
     }
     catch (error) {
         console.log(error)
     }
-}
+};
 
 
 function doWhatItSays() {
-    
-}
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if (error) {
+            return console.log(error);
+
+        }
+
+        var dataArr = data.split(",");
+
+            userInput = dataArr[0];
+            liriChoice = dataArr[1];
+
+            console.log(dataArr);
+
+    });
+};
 
 switch (whatToDo) {
     case "spotify-this-song":
@@ -92,18 +116,14 @@ switch (whatToDo) {
 
     case "concert-this":
         concertThis(userInput);
-        if(userInput === undefined){
 
-            console.log();
-            
-        }
         break;
     case "movie-this":
         movieThis(userInput);
         break;
 
     case "do-what-it-says":
-        doWhatItSays();
+        doWhatItSays(liriChoice);
         break;
 
     default:
